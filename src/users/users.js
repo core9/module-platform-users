@@ -1,6 +1,8 @@
 angular.module('core9Dashboard.users.config', [
   'ui.router',
   'ui.bootstrap',
+  'core9Dashboard.config',
+  'core9Dashboard.menu',
   'ngResource'
 ])
 
@@ -44,11 +46,26 @@ angular.module('core9Dashboard.users.config', [
         return UserResource.get({userid: $stateParams.id});
       }]
     }
+  })
+  .state('role',  {
+    url: '/config/role/:id',
+    views: {
+      "main": {
+        controller: 'RoleEditCtrl',
+        templateUrl: 'users/role.tpl.html'
+      }
+    },
+    data:{ 
+      pageTitle: 'Edit role',
+      context: 'userscontext',
+      sidebar: 'config'
+    }
   });
 })
 
-.controller("UsersCtrl", function ($scope, $state, UserResource) {
+.controller("UsersCtrl", function ($scope, $state, UserResource, ConfigFactory) {
   $scope.users = UserResource.query();
+  $scope.roles = ConfigFactory.query({configtype: 'userrole'});
 
   $scope.add = function(username) {
     var user = new UserResource();
@@ -60,8 +77,23 @@ angular.module('core9Dashboard.users.config', [
     });
   };
 
+  $scope.addrole = function(rolename) {
+    var role = new ConfigFactory();
+    role.configtype = "userrole";
+    role.name = rolename;
+    role.permissions = [];
+    role.$save(function (data) {
+      $scope.roles.push(data);
+      $scope.editrole(data);
+    });
+  };
+
   $scope.edit = function(user) {
     $state.go('user', {id: user.id});
+  };
+
+  $scope.editrole = function(role) {
+    $state.go('role', {id: role._id});
   };
 
   $scope.remove = function (user, index) {
@@ -69,10 +101,29 @@ angular.module('core9Dashboard.users.config', [
       $scope.users.splice(index, 1);
     });
   };
+
+  $scope.removerole = function (role, index) {
+    role.$remove(function() {
+      $scope.roles.splice(index, 1);
+    });
+  };
 })
 
 .controller("UsersEditCtrl", function ($scope, $state, user) {
   $scope.user = user;
+  $scope.newPassword = "";
+
+  $scope.save = function () {
+    if($scope.newPassword !== "") {
+      $scope.user.newPassword = $scope.newPassword;
+    }
+    $scope.user.$update();
+    $state.go('users');
+  };
+})
+
+.controller("RoleEditCtrl", function ($scope, $state, role) {
+  $scope.role = role;
   $scope.newPassword = "";
 
   $scope.save = function () {
