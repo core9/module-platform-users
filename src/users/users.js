@@ -55,6 +55,11 @@ angular.module('core9Dashboard.users.config', [
         templateUrl: 'users/role.tpl.html'
       }
     },
+    resolve: {
+      role: ['ConfigFactory', '$stateParams', function(ConfigFactory, $stateParams) {
+        return ConfigFactory.get({configtype: 'userrole', id: $stateParams.id});
+      }]
+    },
     data:{ 
       pageTitle: 'Edit role',
       context: 'userscontext',
