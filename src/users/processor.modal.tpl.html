@@ -12,8 +12,8 @@
       </thead>
       <tbody>
         <tr ng-repeat="user in users">
-          <td ng-click="select(user)" ng-class="{'bg-success': isSelected(user.id)}">{{user.id}}</td>
-          <td ng-click="select(user)" ng-class="{'bg-success': isSelected(user.id)}">{{user.username}}</td>
+          <td ng-click="select(user)" ng-class="{'bg-success': isSelected(user._id)}">{{user._id}}</td>
+          <td ng-click="select(user)" ng-class="{'bg-success': isSelected(user._id)}">{{user.username}}</td>
         </tr>
       </tbody>
     </table>

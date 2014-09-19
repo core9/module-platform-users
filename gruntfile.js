@@ -88,7 +88,7 @@ module.exports = function(grunt) {
     http: {
       compile: {
         options: {
-          url: 'http://localhost:8080/admin/files/<%= pkg.id %>?contents',
+          url: 'http://localhost.tirolershop.nl:8080/admin/files/<%= pkg.id %>?contents',
           method: 'PUT',
           json: {
             content: "content"

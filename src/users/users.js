@@ -8,7 +8,7 @@ angular.module('core9Dashboard.users.config', [
 
 .factory('UserResource', function($resource) {
   return $resource('/admin/authentication/user/:userid',
-          {userid: '@id'},
+          {userid: '@_id'},
           {update: {method: 'PUT' }});
 })
 
@@ -94,7 +94,7 @@ angular.module('core9Dashboard.users.config', [
   };
 
   $scope.edit = function(user) {
-    $state.go('user', {id: user.id});
+    $state.go('user', {id: user._id});
   };
 
   $scope.editrole = function(role) {
@@ -164,7 +164,7 @@ angular.module('core9Dashboard.users.config', [
 
   $scope.isSelected = function(userid) {
     for(var i = 0; i < selected.length; i++) {
-        if(selected[i].id === userid) {
+        if(selected[i]['id'] === userid) {
             return true;
         }
     }
@@ -174,13 +174,13 @@ angular.module('core9Dashboard.users.config', [
    $scope.select = function(user) {
     var deleted = false;
     for(var i = 0; i < selected.length; i++) {
-        if(selected[i].id === user.id) {
+        if(selected[i]['id'] === user['_id']) {
             deleted = true;
             selected.splice(i, 1);
         }
     }
     if(!deleted) {
-        selected.push({id: user.id, entry: user});
+        selected.push({id: user['_id'], entry: user});
     }
   };
 

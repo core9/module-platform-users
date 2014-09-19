@@ -3,7 +3,7 @@
   <h6>Selected (<a ng-click="showSelected = !showSelected">toggle</a>)</h6>
   <ul class="list-group" ng-show="showSelected">
     <li ng-repeat="item in selected" class="list-group-item" ng-click="deselect($index)">
-      <a>{{item.id}}</a>
+      <a>{{item._id}}</a>
     </li>
   </ul>
 </div>
